@@ -13,29 +13,33 @@
 
 ## Source-to-image (S2I) to launch the app
 
-    : Case0: [image]~[remote source code]
-    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
-
-    : Case1: [remote source repo] --docker-image
-    oc new-app https://github.com/mattf/py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
-
-    : Case2: [image]~[local source repo] --docker-image
-    git clone https://github.com/mattf/py-smoke
-    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~py-smoke
-
-    : Case3: [local source repo] --docker-image
-    git clone https://github.com/mattf/py-smoke
-    oc new-app py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
-
-    : Case4: --template
+    : Case0: --template
     oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
     : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
     oc create configmap oshinko-spark-driver-config
     oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
     oc create service clusterip py-smoke --tcp=8080
 
-    : Case: --file
-    : TODO
+    : Case1: --file
+    curl -O https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
+    : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
+    oc create configmap oshinko-spark-driver-config
+    oc new-app --file=pysparkbuilddc.json -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
+    oc create service clusterip py-smoke --tcp=8080
+
+    : Case2: [image]~[remote source code]
+    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
+
+    : Case3: [remote source repo] --docker-image
+    oc new-app https://github.com/mattf/py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
+
+    : Case4: [image]~[local source repo]
+    git clone https://github.com/mattf/py-smoke
+    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~py-smoke
+
+    : Case5: [local source repo] --docker-image
+    git clone https://github.com/mattf/py-smoke
+    oc new-app py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
 
 ## Make sure it worked
 
