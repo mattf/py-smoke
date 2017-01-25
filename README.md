@@ -4,14 +4,13 @@
 
     oc cluster up
 
-## Setup Oshinko
+## Setup Oshinko (path 0)
 
-    : Launch Oshinko from a template
-    oc new-app -f http://goo.gl/ZU02P4
-    : Authorize Oshinko to create clusters
+    : Create and authorize Oshinko to create clusters
+    oc create serviceaccount oshinko
     oc policy add-role-to-user edit -z oshinko
 
-## Source-to-image (S2I) to launch the app
+## Source-to-image (S2I) to launch the app (path 0)
 
     : Case0: --template
     oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
@@ -27,6 +26,16 @@
     oc new-app --file=pysparkbuilddc.json -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
     oc create service clusterip py-smoke --tcp=8080
 
+
+## Setup Oshinko (path 1)
+
+    : Launch Oshinko from a template
+    oc new-app -f http://goo.gl/ZU02P4
+    : Authorize Oshinko to create clusters
+    oc policy add-role-to-user edit -z oshinko
+
+## Source-to-image (S2I) to launch the app (path 1)
+
     : Case2: [image]~[remote source code]
     oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
 
@@ -40,6 +49,7 @@
     : Case5: [local source repo] --docker-image
     git clone https://github.com/mattf/py-smoke
     oc new-app py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
+
 
 ## Make sure it worked
 
