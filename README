@@ -1,3 +1,5 @@
+oc cluster up
+oc new-app -f http://goo.gl/ZU02P4
+oc policy add-role-to-user edit -z oshinko
 oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
-
 links -dump $(oc get svc/py-smoke --template='{{.spec.clusterIP}}:{{index .spec.ports 0 "port"}}')
