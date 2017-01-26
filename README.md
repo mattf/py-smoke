@@ -6,10 +6,10 @@
 
 ## Setup Oshinko
 
-    : Create and authorize Oshinko's ServiceAccount to create clusters
+    : Create and authorize the ServiceAccount for Oshinko to create clusters
     oc create serviceaccount oshinko
     oc policy add-role-to-user edit -z oshinko
-    : Install the Oshinko source-to-image (S2I) template
+    : Install the Oshinko source-to-image template
     oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
     : Launch the Oshinko Web UI
     oc new-app https://raw.githubusercontent.com/radanalyticsio/oshinko-webui/master/tools/ui-template.yaml
