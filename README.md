@@ -4,6 +4,33 @@
 
     oc cluster up
 
+## Setup Oshinko
+
+    : Create and authorize Oshinko's ServiceAccount to create clusters
+    oc create serviceaccount oshinko
+    oc policy add-role-to-user edit -z oshinko
+    : Install the Oshinko source-to-image (S2I) template
+    oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
+    : Launch the Oshinko Web UI
+    oc new-app https://raw.githubusercontent.com/radanalyticsio/oshinko-webui/master/tools/ui-template.yaml
+
+
+## Source-to-image (S2I) to launch the app
+
+    : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
+    oc create configmap oshinko-spark-driver-config
+    oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
+    oc create service clusterip py-smoke --tcp=8080
+
+
+## Make sure it worked
+
+    : This will return "Connection refused" while the app builds and starts. This can take 5-10 minutes depending on your network speed. It's much faster the second time.
+    links -dump $(oc get svc/py-smoke --template='{{.spec.clusterIP}}:{{index .spec.ports 0 "port"}}')
+
+
+------------------------------------
+
 ## Setup Oshinko (path 0)
 
     : Create and authorize Oshinko to create clusters
@@ -49,12 +76,6 @@
     : Case5: [local source repo] --docker-image
     git clone https://github.com/mattf/py-smoke
     oc new-app py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
-
-
-## Make sure it worked
-
-    : This will return "Connection refused" while the app builds and starts. This can take 5-10 minutes depending on your network speed. It's much faster the second time.
-    links -dump $(oc get svc/py-smoke --template='{{.spec.clusterIP}}:{{index .spec.ports 0 "port"}}')
 
 
 # Notes
