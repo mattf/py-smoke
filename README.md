@@ -30,28 +30,22 @@
 ------------------------------------
 
 
-## Setup Oshinko (path 1)
+## Setup Oshinko (alternative path)
 
-    : Launch Oshinko from a template
+    : Launch Oshinko (oshinko-webui and oshinko-rest) from a template
     oc new-app -f http://goo.gl/ZU02P4
     : Authorize Oshinko to create clusters
     oc policy add-role-to-user edit -z oshinko
 
-## Source-to-image (S2I) to launch the app (path 1)
+## Source-to-image (S2I) to launch the app (alternative path)
 
-    : Case2: [image]~[remote source code]
+    : Case0: [image]~[remote source code] (equiv: [remote source repo] --docker-image)
     oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
 
-    : Case3: [remote source repo] --docker-image
-    oc new-app https://github.com/mattf/py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
-
-    : Case4: [image]~[local source repo]
+    : Case1: [image]~[local source repo] (equiv: [local source repo] --docker-image)
     git clone https://github.com/mattf/py-smoke
     oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~py-smoke
 
-    : Case5: [local source repo] --docker-image
-    git clone https://github.com/mattf/py-smoke
-    oc new-app py-smoke --docker-image=radanalyticsio/radanalytics-pyspark:pre-cli
 
 
 # Notes
