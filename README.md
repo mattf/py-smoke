@@ -29,24 +29,6 @@
 
 ------------------------------------
 
-## Setup Oshinko (path 0)
-
-    : Create and authorize Oshinko to create clusters
-    oc create serviceaccount oshinko
-    oc policy add-role-to-user edit -z oshinko
-
-## Source-to-image (S2I) to launch the app (path 0)
-
-    : Case0: --template
-    oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
-    oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
-    oc create service clusterip py-smoke --tcp=8080
-
-    : Case1: --file
-    curl -O https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
-    oc new-app --file=pysparkbuilddc.json -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
-    oc create service clusterip py-smoke --tcp=8080
-
 
 ## Setup Oshinko (path 1)
 
