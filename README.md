@@ -17,8 +17,6 @@
 
 ## Source-to-image (S2I) to launch the app
 
-    : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
-    oc create configmap oshinko-spark-driver-config
     oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
     oc create service clusterip py-smoke --tcp=8080
 
@@ -41,15 +39,11 @@
 
     : Case0: --template
     oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
-    : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
-    oc create configmap oshinko-spark-driver-config
     oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
     oc create service clusterip py-smoke --tcp=8080
 
     : Case1: --file
     curl -O https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
-    : configmap needed until https://github.com/radanalyticsio/oshinko-s2i/pull/68 is merged
-    oc create configmap oshinko-spark-driver-config
     oc new-app --file=pysparkbuilddc.json -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
     oc create service clusterip py-smoke --tcp=8080
 
