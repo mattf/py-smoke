@@ -50,21 +50,20 @@
 
 # Notes
 
-### Two user experiences - *CLI* and *Console*
+### Two user experiences - *new-app* and *oshinko-s2i template*
 
-The user experiences should have parity. Parity is missing in a few cases and with a caveat -
+Currently only *oshinko-s2i template* is available. This is because the *oshinko-s2i builders* require the ability to create new resources on their user's behalf. The builders achieve this by using the *oshinko ServiceAccount*. *oc new-app* does not allow the user to specify a *ServiceAccount*.
 
-* Parity gap: the CLI process automatically creates a Service
-* Parity gap: the CLI requires oshinko-rest
-* Parity gap: the Console allows for overriding APP_FILE
-* Parity gap: the Console process uses forcePull for the builder image
+Options for enabling *oc new-app* -
+
+* change *new-app* to accept a *ServiceAccount*
+* run *oshinko-rest* and change the *oshinko-s2i builders* to fall back if a *ServiceAccount* is not available
+
+The two user experiences should have parity. Parity is missing in a few cases and with a caveat -
+
+* Parity gap: *new-app* automatically creates a Service
+* Parity gap: *new-app* requires oshinko-rest
+* Parity gap: *oshinko-s2i template* allows for overriding APP_FILE
+* Parity gap: *oshinko-s2i template* uses forcePull for the builder image
 * Parity gap: the resource labeling differs
-* Caveat: it is assumed all Parameters on the Console S2I template can be provided as Environment variables to the CLI process
-
-### The curious case of oshinko-rest
-
-The pod that comes out of the S2I process needs to be able to create new pods (Spark cluster creation). The *oshinko* ServiceAccount with *edit* permissions enabled this.
-
-The Console experience does not require oshinko-rest because the *oshinko* ServiceAccount is present in the S2I template.
-
-The CLI experience does require oshinko-rest because there is no way to attach the *oshinko* ServiceAccount to the result of the S2I process. In this case the resulting pod must communicate with oshinko-rest, which has access to the *oshinko* ServiceAccount to create the Spark clusters.
+* Caveat: it is assumed all Parameters on the *oshinko-s2i template* can be provided as Environment variables to *new-app*
