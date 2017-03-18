@@ -28,12 +28,3 @@ Options for enabling *oc new-app* -
 
 * change *new-app* to accept a *ServiceAccount*
 * run *oshinko-rest* and change the *oshinko-s2i builders* to fall back if a *ServiceAccount* is not available
-
-The two user experiences should have parity. Parity is missing in a few cases and with a caveat -
-
-* Parity gap: *new-app* automatically creates a Service
-* Parity gap: *new-app* requires oshinko-rest
-* Parity gap: *oshinko-s2i template* allows for overriding APP_FILE
-* Parity gap: *oshinko-s2i template* uses forcePull for the builder image
-* Parity gap: the resource labeling differs
-* Caveat: it is assumed all Parameters on the *oshinko-s2i template* can be provided as Environment variables to *new-app*
