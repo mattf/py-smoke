@@ -1,24 +1,13 @@
 # A basic Oshinko example app with Word2Vec
 
-## Setup OpenShift
+## Prerequisite
 
-    oc cluster up
-
-## Setup Oshinko
-
-    : Create and authorize the ServiceAccount for Oshinko to create clusters
-    oc create serviceaccount oshinko
-    oc policy add-role-to-user edit -z oshinko
-    : Install the Oshinko source-to-image template
-    oc create -f https://raw.githubusercontent.com/radanalyticsio/oshinko-s2i/master/pyspark/pysparkbuilddc.json
-    : Launch the Oshinko Web UI
-    oc new-app https://raw.githubusercontent.com/radanalyticsio/oshinko-webui/master/tools/ui-template.yaml
+[Get started with Oshinko](http://radanalytics.io/get-started)
 
 
 ## Source-to-image (S2I) to launch the app
 
-    oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -lapp=py-smoke
-    oc create service clusterip py-smoke --tcp=8080
+    oc new-app --template=oshinko-pyspark-build-dc -p GIT_URI=https://github.com/mattf/py-smoke -p APPLICATION_NAME=py-smoke
 
 
 ## Make sure it worked
@@ -28,25 +17,6 @@
 
 
 ------------------------------------
-
-
-## Setup Oshinko (alternative path)
-
-    : Launch Oshinko (oshinko-webui and oshinko-rest) from a template
-    oc new-app -f http://goo.gl/ZU02P4
-    : Authorize Oshinko to create clusters
-    oc policy add-role-to-user edit -z oshinko
-
-## Source-to-image (S2I) to launch the app (alternative path)
-
-    : Case0: [image]~[remote source code] (equiv: [remote source repo] --docker-image)
-    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~https://github.com/mattf/py-smoke
-
-    : Case1: [image]~[local source repo] (equiv: [local source repo] --docker-image)
-    git clone https://github.com/mattf/py-smoke
-    oc new-app radanalyticsio/radanalytics-pyspark:pre-cli~py-smoke
-
-
 
 # Notes
 
